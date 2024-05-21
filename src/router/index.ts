@@ -20,6 +20,8 @@ import NotFound from '@/views/NotFound.vue'
 import Login from '@/views/Login.vue'
 import Icons from '@/views/Icons.vue'
 
+import Calculator from '@/views/Calculator.vue'
+
 Vue.use(VueRouter)
 
 const ifAuthenticated = (to: Route, from: Route, next: NavigationGuardNext<Vue>) => {
@@ -134,6 +136,12 @@ const routes: Array<RouteConfig> = [
     path: '/preview',
     name: 'Gcode Preview',
     component: GcodePreview,
+    ...defaultRouteConfig
+  },
+  {
+    path: '/calculator',
+    name: 'Calculator',
+    component: Calculator,
     ...defaultRouteConfig
   },
   {

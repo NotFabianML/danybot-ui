@@ -435,6 +435,7 @@ app:
       endstops: Endstops
       fans_outputs: Fans & Outputs
       gcode_preview: Gcode Preview
+      calculator: Calculator
       history: History
       home: Home
       jobs: Jobs

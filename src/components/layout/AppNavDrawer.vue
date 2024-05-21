@@ -47,6 +47,13 @@
           </app-nav-item>
 
           <app-nav-item
+            icon="$dotsGrid"
+            to="/calculator"
+          >
+            {{ $t('app.general.title.calculator') }}
+          </app-nav-item>
+
+          <app-nav-item
             icon="$cubeScan"
             to="/preview"
           >
