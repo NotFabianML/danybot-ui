@@ -49,28 +49,42 @@ import ToolheadMixin from '@/mixins/toolhead'
 import ToolheadControlCross from './ToolheadControlCross.vue'
 import ToolheadControlBars from './ToolheadControlBars.vue'
 import ToolheadControlCircle from './ToolheadControlCircle.vue'
-import ExtruderMoves from './ExtruderMoves.vue'
+// import ExtruderMoves from './ExtruderMoves.vue'
 import ExtruderSelection from './ExtruderSelection.vue'
 import ToolheadPosition from './ToolheadPosition.vue'
-import ZHeightAdjust from './ZHeightAdjust.vue'
+// import ZHeightAdjust from './ZHeightAdjust.vue'
 import SpeedAndFlowAdjust from './SpeedAndFlowAdjust.vue'
-import PressureAdvanceAdjust from './PressureAdvanceAdjust.vue'
+// import PressureAdvanceAdjust from './PressureAdvanceAdjust.vue'
 import ExtruderStats from './ExtruderStats.vue'
 import ExtruderSteppers from './ExtruderSteppers.vue'
 import ToolChangeCommands from './ToolChangeCommands.vue'
 import type { ToolheadControlStyle } from '@/store/config/types'
+
+// @Component({
+//   components: {
+//     ToolheadControlCross,
+//     ToolheadControlBars,
+//     ToolheadControlCircle,
+//     ExtruderMoves,
+//     ExtruderSelection,
+//     ToolheadPosition,
+//     ZHeightAdjust,
+//     SpeedAndFlowAdjust,
+//     PressureAdvanceAdjust,
+//     ExtruderStats,
+//     ExtruderSteppers,
+//     ToolChangeCommands
+//   }
+// })
 
 @Component({
   components: {
     ToolheadControlCross,
     ToolheadControlBars,
     ToolheadControlCircle,
-    ExtruderMoves,
     ExtruderSelection,
     ToolheadPosition,
-    ZHeightAdjust,
     SpeedAndFlowAdjust,
-    PressureAdvanceAdjust,
     ExtruderStats,
     ExtruderSteppers,
     ToolChangeCommands

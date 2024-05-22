@@ -50,7 +50,7 @@
       </div> -->
 
       <v-row v-if="supportsHistoryComponent">
-        <v-col cols="3">
+        <v-col cols="6">
           <v-card
             outlined
             class="px-2 py-1 text-center stat-square"
@@ -69,7 +69,7 @@
             </div>
           </v-card>
         </v-col>
-        <v-col cols="3">
+        <v-col cols="6">
           <v-card
             outlined
             class="px-2 py-1 text-center stat-square"
@@ -88,7 +88,7 @@
             </div>
           </v-card>
         </v-col>
-        <v-col cols="3">
+        <!-- <v-col cols="3">
           <v-card
             outlined
             class="px-2 py-1 text-center stat-square"
@@ -106,8 +106,8 @@
               {{ $filters.formatCounterSeconds(rollup.print_avg) }}
             </div>
           </v-card>
-        </v-col>
-        <v-col cols="3">
+        </v-col> -->
+        <!-- <v-col cols="3">
           <v-card
             outlined
             class="px-2 py-1 text-center stat-square"
@@ -125,7 +125,7 @@
               {{ $filters.getReadableLengthString(rollup.filament_avg) }}
             </div>
           </v-card>
-        </v-col>
+        </v-col> -->
       </v-row>
     </v-card-text>
   </collapsable-card>
