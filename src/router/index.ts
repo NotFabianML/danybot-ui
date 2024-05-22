@@ -20,7 +20,7 @@ import NotFound from '@/views/NotFound.vue'
 import Login from '@/views/Login.vue'
 import Icons from '@/views/Icons.vue'
 
-import Calculator from '@/views/Calculator.vue'
+import Routine from '@/views/Routine.vue'
 
 Vue.use(VueRouter)
 
@@ -139,9 +139,9 @@ const routes: Array<RouteConfig> = [
     ...defaultRouteConfig
   },
   {
-    path: '/calculator',
-    name: 'Calculator',
-    component: Calculator,
+    path: '/routine',
+    name: 'Routine',
+    component: Routine,
     ...defaultRouteConfig
   },
   {
