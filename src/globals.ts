@@ -238,6 +238,7 @@ export const Globals = Object.freeze({
   FILTERED_FILES_EXTENSION: ['.ignoreme'],
   KEYBOARD_SHORTCUTS: {
     home: 'h',
+    routine: 'r',
     console: 'c',
     preview: 'p',
     jobs: 'j',
