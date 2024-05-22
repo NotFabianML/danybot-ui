@@ -146,6 +146,7 @@ app:
       add_dir: Add Directory
       add_file: Add File
       add_printer: Add printer
+      add_robot: Add robot
       add_to_queue: Add to Queue
       adjust_layout: Adjust dashboard layout
       adjusted: Adjusted
@@ -170,6 +171,7 @@ app:
       go_to_file: Go to file
       heaters_off: Heaters off
       job_queue: Job Queue
+      last_routine: Last Routine
       load_all: Load all
       login: Login
       logout: Logout
@@ -303,6 +305,7 @@ app:
       requested_speed: Speed
       retract_length: Retract Length
       retract_speed: Retract Speed
+      robots: Robots
       save_as: Save As
       screw_index: Screw index
       screw_name: Screw name
@@ -412,6 +415,7 @@ app:
         modified: Modified
         name: Name
         nozzle_diameter: Nozzle diameter
+        routine_duration: Routine Duration
         print_duration: Print duration
         time_added: Time Added
         time_in_queue: Time In Queue
@@ -424,6 +428,7 @@ app:
     title:
       add_chart: Add Chart
       add_printer: Add Printer
+      add_robot: Add Robot
       bedmesh: Bed Mesh
       bedmesh_controls: Bed Mesh Controls
       camera: Camera | Cameras
@@ -435,7 +440,7 @@ app:
       endstops: Endstops
       fans_outputs: Fans & Outputs
       gcode_preview: Gcode Preview
-      calculator: Calculator
+      routine: Generate Routine
       history: History
       home: Home
       jobs: Jobs
@@ -450,7 +455,7 @@ app:
       rollover_logs: Rollover logs
       runout_sensors: Runout Sensors
       settings: Settings
-      stats: Printer Stats
+      stats: Danybot Stats
       system: System
       system_overview: System Information
       temperature: Thermals
