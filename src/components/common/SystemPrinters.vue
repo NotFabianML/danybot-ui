@@ -1,6 +1,6 @@
 <template>
   <v-list dense>
-    <v-subheader>{{ $t('app.general.label.printers') }}</v-subheader>
+    <v-subheader>{{ $t('app.general.label.robots') }}</v-subheader>
 
     <template v-for="(instance, index) in instances">
       <v-list-item
@@ -36,7 +36,7 @@
       </v-list-item-icon>
       <v-list-item-content>
         <v-list-item-title class="text-wrap">
-          {{ $t('app.general.btn.add_printer') }}
+          {{ $t('app.general.btn.add_robot') }}
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>

@@ -4,7 +4,7 @@
     max-width="320"
     :save-button-disabled="!verified"
     :valid.sync="valid"
-    :title="$t('app.general.title.add_printer')"
+    :title="$t('app.general.title.add_robot')"
     :help-tooltip="$t('app.endpoint.tooltip.endpoint_examples')"
     @save="addInstance"
   >

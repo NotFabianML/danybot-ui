@@ -215,7 +215,7 @@ export default class JobHistory extends Mixins(FilesMixin) {
       { text: this.$tc('app.general.table.header.status'), value: 'status', configurable: true },
       { text: this.$tc('app.general.table.header.start_time'), value: 'start_time', configurable: true },
       { text: this.$tc('app.general.table.header.end_time'), value: 'end_time', configurable: true },
-      { text: this.$tc('app.general.table.header.print_duration'), value: 'print_duration', configurable: true },
+      { text: this.$tc('app.general.table.header.routine_duration'), value: 'print_duration', configurable: true },
       { text: this.$tc('app.general.table.header.total_duration'), value: 'total_duration', configurable: true },
       { text: this.$tc('app.general.table.header.filament_used'), value: 'filament_used', configurable: true },
       { text: this.$t('app.general.table.header.size'), value: 'metadata.size', width: '1%', configurable: true },

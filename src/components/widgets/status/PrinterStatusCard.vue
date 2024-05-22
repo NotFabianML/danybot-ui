@@ -27,7 +27,7 @@
           v-if="supportsHistoryComponent && !(printerPrinting || printerPaused)"
           key="reprint"
         >
-          {{ $t('app.general.btn.reprint') }}
+          {{ $t('app.general.btn.last_routine') }}
         </v-tab>
       </v-tabs>
     </template>
