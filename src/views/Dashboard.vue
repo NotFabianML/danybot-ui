@@ -48,20 +48,43 @@ import StateMixin from '@/mixins/state'
 import PrinterStatusCard from '@/components/widgets/status/PrinterStatusCard.vue'
 import JobsCard from '@/components/widgets/jobs/JobsCard.vue'
 import ToolheadCard from '@/components/widgets/toolhead/ToolheadCard.vue'
-import TemperatureCard from '@/components/widgets/thermals/TemperatureCard.vue'
+// import TemperatureCard from '@/components/widgets/thermals/TemperatureCard.vue'
 import CameraCard from '@/components/widgets/camera/CameraCard.vue'
 import MacrosCard from '@/components/widgets/macros/MacrosCard.vue'
 import ConsoleCard from '@/components/widgets/console/ConsoleCard.vue'
-import OutputsCard from '@/components/widgets/outputs/OutputsCard.vue'
-import PrinterLimitsCard from '@/components/widgets/limits/PrinterLimitsCard.vue'
-import RetractCard from '@/components/widgets/retract/RetractCard.vue'
+// import OutputsCard from '@/components/widgets/outputs/OutputsCard.vue'
+// import PrinterLimitsCard from '@/components/widgets/limits/PrinterLimitsCard.vue'
+// import RetractCard from '@/components/widgets/retract/RetractCard.vue'
 import type { LayoutConfig } from '@/store/layout/types'
 import BedMeshCard from '@/components/widgets/bedmesh/BedMeshCard.vue'
-import GcodePreviewCard from '@/components/widgets/gcode-preview/GcodePreviewCard.vue'
+// import GcodePreviewCard from '@/components/widgets/gcode-preview/GcodePreviewCard.vue'
 import JobQueueCard from '@/components/widgets/job-queue/JobQueueCard.vue'
 import SpoolmanCard from '@/components/widgets/spoolman/SpoolmanCard.vue'
 import SensorsCard from '@/components/widgets/sensors/SensorsCard.vue'
 import RunoutSensorsCard from '@/components/widgets/runout-sensors/RunoutSensorsCard.vue'
+
+// ORIGINAL
+
+// @Component({
+//   components: {
+//     PrinterStatusCard,
+//     JobsCard,
+//     ToolheadCard,
+//     MacrosCard,
+//     TemperatureCard,
+//     CameraCard,
+//     PrinterLimitsCard,
+//     RetractCard,
+//     ConsoleCard,
+//     OutputsCard,
+//     BedMeshCard,
+//     GcodePreviewCard,
+//     JobQueueCard,
+//     SpoolmanCard,
+//     SensorsCard,
+//     RunoutSensorsCard
+//   }
+// })
 
 @Component({
   components: {
@@ -69,14 +92,9 @@ import RunoutSensorsCard from '@/components/widgets/runout-sensors/RunoutSensors
     JobsCard,
     ToolheadCard,
     MacrosCard,
-    TemperatureCard,
     CameraCard,
-    PrinterLimitsCard,
-    RetractCard,
     ConsoleCard,
-    OutputsCard,
     BedMeshCard,
-    GcodePreviewCard,
     JobQueueCard,
     SpoolmanCard,
     SensorsCard,
