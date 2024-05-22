@@ -81,6 +81,18 @@
             </v-list-item>
 
             <v-list-item
+              v-if="isCsvFile(file)"
+              @click="$emit('view-csv', file)"
+            >
+              <v-list-item-icon>
+                <v-icon>$magnify</v-icon>
+              </v-list-item-icon>
+              <v-list-item-content>
+                <v-list-item-title>View CSV</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item
               v-if="canPrint"
               @click="$emit('refresh-metadata', file)"
             >
@@ -214,6 +226,15 @@ export default class FileSystemContextMenu extends Mixins(StateMixin, FilesMixin
 
   get rootProperties (): RootProperties {
     return this.$store.getters['files/getRootProperties'](this.root) as RootProperties
+  }
+
+  isCsvFile (file: FileBrowserEntry | FileBrowserEntry[]): boolean {
+    if (Array.isArray(file) || file.type === 'directory') {
+      return false
+    }
+
+    const extension = file.name.split('.').pop()
+    return extension === 'csv'
   }
 
   get canPrint () {
