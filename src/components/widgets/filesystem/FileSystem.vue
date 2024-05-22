@@ -47,7 +47,7 @@
       :loading="filesLoading"
       :disabled="disabled"
       :search="search"
-      :files="files"
+      :files="filteredFiles"
       :drag-state.sync="dragState.browserState"
       :bulk-actions="bulkActions"
       :large-thumbnails="currentRoot === 'timelapse'"
@@ -66,6 +66,7 @@
       @print="handlePrint"
       @view="handleFileOpenDialog($event, 'view')"
       @edit="handleFileOpenDialog($event, 'edit')"
+      @view-csv="handleViewCsv"
       @rename="handleRenameDialog"
       @duplicate="handleDuplicateDialog"
       @remove="handleRemove"
@@ -202,6 +203,9 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
   @Prop({ type: Boolean })
   readonly bulkActions?: boolean
 
+  @Prop({ type: Function, default: null })
+  readonly filterFiles!: ((file: FileBrowserEntry) => boolean) | null
+
   // Maintains the path and root.
   currentRoot = ''
 
@@ -211,6 +215,13 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
   // Maintains filter state.
   get filters (): FileFilterType[] {
     return this.$store.state.config.uiSettings.fileSystem.activeFilters[this.currentRoot] ?? []
+  }
+
+  get filteredFiles (): FileBrowserEntry[] {
+    if (this.filterFiles) {
+      return this.files.filter(this.filterFiles)
+    }
+    return this.files
   }
 
   set filters (value: FileFilterType[]) {
@@ -315,33 +326,33 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
     ]
 
     // If this is a gcode root, then metadata is available, including potentially history data.
-    if (this.currentRoot === 'gcodes') {
-      headers = [
-        ...headers,
-        { text: this.$t('app.general.table.header.height'), value: 'object_height', configurable: true },
-        { text: this.$t('app.general.table.header.first_layer_height'), value: 'first_layer_height', configurable: true },
-        { text: this.$t('app.general.table.header.layer_height'), value: 'layer_height', configurable: true },
-        { text: this.$t('app.general.table.header.filament_name'), value: 'filament_name', configurable: true },
-        { text: this.$t('app.general.table.header.filament_type'), value: 'filament_type', configurable: true },
-        { text: this.$t('app.general.table.header.filament'), value: 'filament_total', configurable: true },
-        { text: this.$t('app.general.table.header.filament_weight_total'), value: 'filament_weight_total', configurable: true },
-        { text: this.$t('app.general.table.header.filament_used'), value: 'history.filament_used', configurable: true },
-        { text: this.$t('app.general.table.header.nozzle_diameter'), value: 'nozzle_diameter', configurable: true },
-        { text: this.$t('app.general.table.header.slicer'), value: 'slicer', configurable: true },
-        { text: this.$t('app.general.table.header.slicer_version'), value: 'slicer_version', configurable: true },
-        { text: this.$t('app.general.table.header.estimated_time'), value: 'estimated_time', configurable: true },
-        { text: this.$t('app.general.table.header.print_duration'), value: 'history.print_duration', configurable: true },
-        { text: this.$t('app.general.table.header.total_duration'), value: 'history.total_duration', configurable: true },
-        { text: this.$t('app.general.table.header.first_layer_bed_temp'), value: 'first_layer_bed_temp', configurable: true },
-        { text: this.$t('app.general.table.header.first_layer_extr_temp'), value: 'first_layer_extr_temp', configurable: true },
-        { text: this.$t('app.general.table.header.chamber_temp'), value: 'chamber_temp', configurable: true },
-        {
-          text: this.$t('app.general.table.header.last_printed'),
-          value: 'print_start_time',
-          configurable: true
-        }
-      ]
-    }
+    // if (this.currentRoot === 'gcodes') {
+    //   headers = [
+    //     ...headers,
+    //     { text: this.$t('app.general.table.header.height'), value: 'object_height', configurable: true },
+    //     { text: this.$t('app.general.table.header.first_layer_height'), value: 'first_layer_height', configurable: true },
+    //     { text: this.$t('app.general.table.header.layer_height'), value: 'layer_height', configurable: true },
+    //     { text: this.$t('app.general.table.header.filament_name'), value: 'filament_name', configurable: true },
+    //     { text: this.$t('app.general.table.header.filament_type'), value: 'filament_type', configurable: true },
+    //     { text: this.$t('app.general.table.header.filament'), value: 'filament_total', configurable: true },
+    //     { text: this.$t('app.general.table.header.filament_weight_total'), value: 'filament_weight_total', configurable: true },
+    //     { text: this.$t('app.general.table.header.filament_used'), value: 'history.filament_used', configurable: true },
+    //     { text: this.$t('app.general.table.header.nozzle_diameter'), value: 'nozzle_diameter', configurable: true },
+    //     { text: this.$t('app.general.table.header.slicer'), value: 'slicer', configurable: true },
+    //     { text: this.$t('app.general.table.header.slicer_version'), value: 'slicer_version', configurable: true },
+    //     { text: this.$t('app.general.table.header.estimated_time'), value: 'estimated_time', configurable: true },
+    //     { text: this.$t('app.general.table.header.routine_duration'), value: 'history.print_duration', configurable: true },
+    //     { text: this.$t('app.general.table.header.total_duration'), value: 'history.total_duration', configurable: true },
+    //     { text: this.$t('app.general.table.header.first_layer_bed_temp'), value: 'first_layer_bed_temp', configurable: true },
+    //     { text: this.$t('app.general.table.header.first_layer_extr_temp'), value: 'first_layer_extr_temp', configurable: true },
+    //     { text: this.$t('app.general.table.header.chamber_temp'), value: 'chamber_temp', configurable: true },
+    //     {
+    //       text: this.$t('app.general.table.header.last_printed'),
+    //       value: 'print_start_time',
+    //       configurable: true
+    //     }
+    //   ]
+    // }
 
     // Final headers. All roots have these.
     headers = [
@@ -679,6 +690,20 @@ export default class FileSystem extends Mixins(StateMixin, FilesMixin, ServicesM
       })
       .finally(() => this.$store.dispatch('files/removeFileDownload'))
       .catch(e => e)
+  }
+
+  async handleViewCsv (file: AppFile) {
+    try {
+      console.log('Loading CSV file:', JSON.stringify(file))
+      const response = await this.getFile(file.filename, 'gcodes' + file.path, file.size, {
+        responseType: 'text',
+        transformResponse: [v => v]
+      })
+      const csvFile = new File([response.data], file.filename, { type: 'text/csv' })
+      this.$emit('view-csv', csvFile)
+    } catch (error) {
+      console.error('Error loading CSV file:', error)
+    }
   }
 
   async handlePreviewGcode (file: AppFile | AppFileWithMeta) {

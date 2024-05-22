@@ -14,7 +14,7 @@
         v-model="selected"
         item-key="key"
         :headers="headers"
-        :items="jobsWithKey"
+        :items="filteredJobsWithKey"
         :dense="dense"
         :loading="hasWait($waits.onJobQueue)"
         :show-select="bulkActions"
@@ -108,6 +108,10 @@ export default class JobQueueBrowser extends Mixins(StateMixin) {
         ...job,
         key: `${job.job_id}-${refresh}`
       }))
+  }
+
+  get filteredJobsWithKey (): QueueJobWithKey[] {
+    return this.jobsWithKey.filter(job => job.filename.endsWith('.csv'))
   }
 
   handleRowClick (_data: unknown, props: DataTableItemProps, event: MouseEvent) {
