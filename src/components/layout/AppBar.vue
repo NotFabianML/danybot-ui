@@ -75,12 +75,12 @@
         </v-tooltip>
       </div>
 
-      <div v-if="authenticated && socketConnected && showUploadAndPrint">
+      <!-- <div v-if="authenticated && socketConnected && showUploadAndPrint">
         <app-upload-and-print-btn
           :disabled="printerPrinting || printerPaused || !klippyReady"
           @upload="handleUploadAndPrint"
         />
-      </div>
+      </div> -->
 
       <div v-if="authenticated && socketConnected && topNavPowerToggle">
         <v-tooltip bottom>
@@ -193,7 +193,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import UserPasswordDialog from '@/components/settings/auth/UserPasswordDialog.vue'
 import PendingChangesDialog from '@/components/settings/PendingChangesDialog.vue'
 import AppSaveConfigAndRestartBtn from './AppSaveConfigAndRestartBtn.vue'
-import AppUploadAndPrintBtn from './AppUploadAndPrintBtn.vue'
+// import AppUploadAndPrintBtn from './AppUploadAndPrintBtn.vue'
 import { defaultState } from '@/store/layout/state'
 import StateMixin from '@/mixins/state'
 import ServicesMixin from '@/mixins/services'
@@ -203,12 +203,22 @@ import { SocketActions } from '@/api/socketActions'
 import type { OutputPin } from '@/store/printer/types'
 import type { Device } from '@/store/power/types'
 
+// ORIGINAL
+
+// @Component({
+//   components: {
+//     UserPasswordDialog,
+//     PendingChangesDialog,
+//     AppSaveConfigAndRestartBtn,
+//     AppUploadAndPrintBtn
+//   }
+// })
+
 @Component({
   components: {
     UserPasswordDialog,
     PendingChangesDialog,
-    AppSaveConfigAndRestartBtn,
-    AppUploadAndPrintBtn
+    AppSaveConfigAndRestartBtn
   }
 })
 export default class AppBar extends Mixins(StateMixin, ServicesMixin, FilesMixin, BrowserMixin) {
