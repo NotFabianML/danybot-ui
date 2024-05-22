@@ -40,17 +40,17 @@
           </app-nav-item>
 
           <app-nav-item
+            icon="$list"
+            to="/routine"
+          >
+            {{ $t('app.general.title.routine') }}
+          </app-nav-item>
+
+          <app-nav-item
             icon="$console"
             to="/console"
           >
             {{ $t('app.general.title.console') }}
-          </app-nav-item>
-
-          <app-nav-item
-            icon="$dotsGrid"
-            to="/calculator"
-          >
-            {{ $t('app.general.title.calculator') }}
           </app-nav-item>
 
           <app-nav-item
@@ -83,12 +83,12 @@
             {{ $t('app.general.title.timelapse') }}
           </app-nav-item>
 
-          <app-nav-item
+          <!-- <app-nav-item
             icon="$tune"
             to="/tune"
           >
             {{ $t('app.general.title.tune') }}
-          </app-nav-item>
+          </app-nav-item> -->
 
           <app-nav-item
             v-if="enableDiagnostics"
