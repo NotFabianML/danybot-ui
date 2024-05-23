@@ -8,6 +8,9 @@
       <button @click="saveFile">
         Save
       </button>
+      <button @click="viewJSON">
+        View JSON
+      </button>
     </div>
     <div class="content">
       <file-system
@@ -37,6 +40,12 @@
           </tbody>
         </table>
       </div>
+      <button
+        v-if="csvData.length"
+        @click="generateGCode"
+      >
+        Generate GCode
+      </button>
     </div>
   </div>
 </template>
@@ -46,6 +55,7 @@ import { Component, Mixins } from 'vue-property-decorator'
 import FileSystem from '@/components/widgets/filesystem/FileSystem.vue'
 import FilesMixin from '@/mixins/files'
 import Papa from 'papaparse'
+import { DanyBotAPI } from '@/api/DanyBotAPI'
 
 @Component({
   components: {
@@ -103,13 +113,92 @@ export default class Routine extends Mixins(FilesMixin) {
   filterCsvFiles (file: File) {
     return file.name.endsWith('.csv')
   }
+
+  async viewJSON () {
+    try {
+      const data = await DanyBotAPI.getAll()
+      console.log(data)
+    } catch (error) {
+      console.error('Error fetching JSON:', error)
+    }
+  }
+
+  async generateGCode () {
+    if (this.csvData.length) {
+      const jsonPayload = {
+        deck: [
+          { stand_location_X: 12.07, stand_location_Y: 125.81, stand_number: 1 },
+          { stand_location_X: 153, stand_location_Y: 125.81, stand_number: 2 },
+          { stand_location_X: 294.8, stand_location_Y: 125.7, stand_number: 3 },
+          { stand_location_X: 436.4, stand_location_Y: 125.81, stand_number: 4 },
+          { stand_location_X: 12.07, stand_location_Y: 272, stand_number: 5 },
+          { stand_location_X: 153.5, stand_location_Y: 272, stand_number: 6 },
+          { stand_location_X: 295.5, stand_location_Y: 272, stand_number: 7 },
+          { stand_location_X: 436.4, stand_location_Y: 272, stand_number: 8 },
+          { stand_location_X: 12.07, stand_location_Y: 418.8, stand_number: 9 },
+          { stand_location_X: 154.5, stand_location_Y: 418.8, stand_number: 10 },
+          { stand_location_X: 295.5, stand_location_Y: 418.8, stand_number: 11 },
+          { stand_location_X: 436.4, stand_location_Y: 418.8, stand_number: 12 }
+        ],
+        pick_and_place_list: this.csvData.map(row => [row.pick, row.place]),
+        pref_selected_vial: 2,
+        racks: [
+          {
+            close_piker: 0,
+            empty_secure_height: 140,
+            holding_secure_height: 115,
+            name: 'Vial 1ml 96',
+            open_piker: 0.4,
+            picking_height: 174,
+            placing_height: 160,
+            rack_dimensionX: 8,
+            rack_dimensionY: 12,
+            rack_id: 1,
+            vial_diameter: 9.34,
+            xy_empyt_speed: 10000,
+            xy_holding_speed: 10000,
+            z_empyt_speed: 2250,
+            z_holding_speed: 2250,
+            z_picking_speed: 300
+          },
+          {
+            close_piker: 0,
+            dimensionY: 6,
+            empty_secure_height: 160,
+            holding_secure_height: 100,
+            name: 'Vial 5ml 48',
+            open_piker: 0.4,
+            picking_height: 202,
+            placing_height: 202,
+            rack_dimensionX: 8,
+            rack_id: 2,
+            vial_diameter: 9,
+            xy_empyt_speed: 50000,
+            xy_holding_speed: 10000,
+            z_empyt_speed: 2250,
+            z_holding_speed: 2250,
+            z_picking_speed: 300
+          }
+        ]
+      }
+
+      try {
+        const response = await DanyBotAPI.createGCode(jsonPayload)
+        console.log('GCode generated:', response)
+        alert('GCode generated successfully!')
+      } catch (error) {
+        console.error('Error generating GCode:', error)
+        alert('Failed to generate GCode.')
+      }
+    }
+  }
 }
 </script>
 
 <style scoped>
 .routine {
   text-align: center;
-  max-width: 1200px; /* Ajusta el tamaño según tus necesidades */
+  max-width: 1200px;
   margin: 0 auto;
 }
 input[type="file"] {
@@ -142,7 +231,7 @@ button {
 }
 .table-container {
   flex: 1;
-  max-width: 50%; /* Ajusta el tamaño según tus necesidades */
+  max-width: 50%;
   margin-right: 20px;
 }
 table {
