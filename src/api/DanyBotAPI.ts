@@ -1,5 +1,5 @@
 import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
-import Vue from 'vue/types/umd'
+import { httpClientActions } from '@/api/httpClientActions'
 
 // Configura la URL base de la API
 const apiClient = axios.create({
@@ -30,7 +30,7 @@ export const DanyBotAPI = {
   // },
 
   createGcode<T = unknown, R = AxiosResponse<T>, D = unknown> (data: D, options?: AxiosRequestConfig) {
-    return Vue.$httpClient.post<T, R, D>('/gcode', data, {
+    return httpClientActions.post<T, R, D>('/gcode', data, {
       ...options,
       responseType: 'blob' // Indica que la respuesta será un archivo
     })
