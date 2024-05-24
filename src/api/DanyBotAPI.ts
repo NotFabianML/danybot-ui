@@ -1,4 +1,5 @@
-import axios, { type AxiosResponse } from 'axios'
+import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
+import Vue from 'vue/types/umd'
 
 // Configura la URL base de la API
 const apiClient = axios.create({
@@ -23,9 +24,16 @@ export const DanyBotAPI = {
   },
 
   // Crear GCode
-  createGCode: async (data: object) => {
-    const response: AxiosResponse = await apiClient.post('/gcode', data)
-    return response.data
+  // createGCode: async (data: object) => {
+  //   const response: AxiosResponse = await apiClient.post('/gcode', data)
+  //   return response.data
+  // },
+
+  createGcode<T = unknown, R = AxiosResponse<T>, D = unknown> (data: D, options?: AxiosRequestConfig) {
+    return Vue.$httpClient.post<T, R, D>('/gcode', data, {
+      ...options,
+      responseType: 'blob' // Indica que la respuesta será un archivo
+    })
   },
 
   // Obtener todos los racks
