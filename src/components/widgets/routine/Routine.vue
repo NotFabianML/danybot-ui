@@ -188,10 +188,23 @@ export default class Routine extends Mixins(FilesMixin) {
       }
       try {
         const response = await DanyBotAPI.createGcode(jsonData)
-        const blob = new Blob([response.data as BlobPart], { type: 'text/plain' })
-        const file = new File([blob], 'routine.gcode', { type: 'text/plain' })
-        await this.uploadFile(file, '', 'gcodes', false)
-        alert('G-code generated and uploaded successfully!')
+        if (response.data) {
+        // Imprimir el contenido recibido para verificación
+          console.log('G-code content:', response.data)
+
+          const blob = new Blob([response.data as BlobPart], { type: 'text/plain' })
+          const file = new File([blob], 'routine.gcode', { type: 'text/plain' })
+
+          // Verificar que el objeto File se crea correctamente
+          console.log('File object:', file)
+
+          // Asegúrate de que el método uploadFile está correctamente implementado y recibe los parámetros correctos
+          await this.uploadFile(file, '', 'gcodes', false)
+          alert('G-code generated and uploaded successfully!')
+        } else {
+          console.error('No data received from API')
+          alert('Failed to generate and upload the G-code.')
+        }
       } catch (error) {
         console.error('Error generating G-code:', error)
         alert('Failed to generate and upload the G-code.')
