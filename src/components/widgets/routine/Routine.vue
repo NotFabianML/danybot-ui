@@ -13,7 +13,6 @@
       </button>
       <p v-if="jsonData">
         JSON data: "{{ jsonData }}"
-
       </p>
     </div>
     <div class="content">
@@ -131,7 +130,7 @@ export default class Routine extends Mixins(FilesMixin) {
 
   async generateGCode () {
     if (this.csvData.length) {
-      const jsonPayload = {
+      const jsonData = {
         deck: [
           { stand_location_X: 12.07, stand_location_Y: 125.81, stand_number: 1 },
           { stand_location_X: 153, stand_location_Y: 125.81, stand_number: 2 },
@@ -187,15 +186,18 @@ export default class Routine extends Mixins(FilesMixin) {
           }
         ]
       }
-
       try {
-        const response = await DanyBotAPI.createGCode(jsonPayload)
-        console.log('GCode generated:', response)
-        alert('GCode generated successfully!')
+        const response = await DanyBotAPI.createGcode(jsonData)
+        const blob = new Blob([response.data as BlobPart], { type: 'text/plain' })
+        const file = new File([blob], 'routine.gcode', { type: 'text/plain' })
+        await this.uploadFile(file, '', 'gcodes', false)
+        alert('G-code generated and uploaded successfully!')
       } catch (error) {
-        console.error('Error generating GCode:', error)
-        alert('Failed to generate GCode.')
+        console.error('Error generating G-code:', error)
+        alert('Failed to generate and upload the G-code.')
       }
+    } else {
+      alert('No CSV data to generate G-code.')
     }
   }
 }
