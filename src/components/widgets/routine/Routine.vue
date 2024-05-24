@@ -11,6 +11,10 @@
       <button @click="viewJSON">
         View JSON
       </button>
+      <p v-if="jsonData">
+        JSON data: "{{ jsonData }}"
+
+      </p>
     </div>
     <div class="content">
       <file-system
@@ -65,6 +69,7 @@ import { DanyBotAPI } from '@/api/DanyBotAPI'
 export default class Routine extends Mixins(FilesMixin) {
   selectedFile: File | null = null
   csvData: Array<{ pick: string, place: string }> = []
+  jsonData: string | null = null
 
   handleFileChange (event: Event) {
     const target = event.target as HTMLInputElement
@@ -118,6 +123,7 @@ export default class Routine extends Mixins(FilesMixin) {
     try {
       const data = await DanyBotAPI.getAll()
       console.log(data)
+      this.jsonData = JSON.stringify(data, null, 2)
     } catch (error) {
       console.error('Error fetching JSON:', error)
     }
@@ -217,6 +223,10 @@ button {
   background-color: #007bff;
   color: #fff;
   cursor: pointer;
+}
+p {
+  margin: 10px 0;
+  color: #fff;
 }
 #file-upload {
   margin-top: 20px;

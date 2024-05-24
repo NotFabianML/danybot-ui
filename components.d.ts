@@ -90,7 +90,6 @@ declare module 'vue' {
     VExpansionPanelHeader: typeof import('vuetify/lib')['VExpansionPanelHeader']
     VExpansionPanels: typeof import('vuetify/lib')['VExpansionPanels']
     VFadeTransition: typeof import('vuetify/lib')['VFadeTransition']
-    VFileInput: typeof import('vuetify/lib')['VFileInput']
     VFooter: typeof import('vuetify/lib')['VFooter']
     VForm: typeof import('vuetify/lib')['VForm']
     VIcon: typeof import('vuetify/lib')['VIcon']
