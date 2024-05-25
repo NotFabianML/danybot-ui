@@ -191,15 +191,26 @@ export default class Routine extends Mixins(FilesMixin) {
         if (response.data) {
           console.log('G-code content:', response.data.gcode)
 
-          this.jsonData = JSON.stringify(response, null, 2)
+          this.jsonData = JSON.stringify(response.data, null, 2)
 
           const blob = new Blob([response.data.gcode as BlobPart], { type: 'text/plain' })
-          const file = new File([blob], 'routine.gcode', { type: 'text/plain' })
+          this.selectedFile = new File([blob], 'routine.gcode', { type: 'text/plain' })
 
-          console.log('File object:', file)
+          console.log('File object:', this.selectedFile)
 
-          await this.uploadFile(file, '', 'gcodes', false)
-          alert('G-code generated and uploaded successfully!')
+          const path = '' // Path relativo dentro del directorio `gcodes`
+          const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
+
+          try {
+            await this.uploadFile(this.selectedFile, path, root, false)
+            alert('File saved successfully!')
+          } catch (error) {
+            console.error('Error uploading file:', error)
+            alert('Failed to save the file.')
+          }
+
+          // await this.uploadFile(file, '', 'gcodes', false)
+          // alert('G-code generated and uploaded successfully!')
         } else {
           console.error('No data received from API')
           alert('Failed to generate and upload the G-code.')
