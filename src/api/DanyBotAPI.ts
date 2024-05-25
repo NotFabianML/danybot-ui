@@ -24,17 +24,17 @@ export const DanyBotAPI = {
   },
 
   // Crear GCode
-  // createGCode: async (data: object) => {
-  //   const response: AxiosResponse = await apiClient.post('/gcode', data)
-  //   return response.data
-  // },
-
-  createGcode<T = unknown, R = AxiosResponse<T>, D = unknown> (data: D, options?: AxiosRequestConfig) {
-    return httpClientActions.post<T, R, D>('/gcode', data, {
-      ...options,
-      responseType: 'blob' // Indica que la respuesta será un archivo
-    })
+  createGcode: async (data: object) => {
+    const response: AxiosResponse = await apiClient.post('/gcode', data)
+    return response.data
   },
+
+  // createGcode<T = unknown, R = AxiosResponse<T>, D = unknown> (data: D, options?: AxiosRequestConfig) {
+  //   return httpClientActions.post<T, R, D>('/gcode', data, {
+  //     ...options,
+  //     responseType: 'blob' // Indica que la respuesta será un archivo
+  //   })
+  // },
 
   // Obtener todos los racks
   getRacks: async () => {
