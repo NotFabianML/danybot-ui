@@ -2,7 +2,7 @@
 <template>
   <div class="routine-card">
     <collapsable-card
-      :title="$t('app.printer.title.routine')"
+      :title="$t('app.general.title.routine')"
       icon="$list"
       card-classes="d-flex flex-column"
       content-classes="flex-grow-1 flow-shrink-0"
