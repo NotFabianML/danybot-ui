@@ -1,5 +1,4 @@
-import axios, { type AxiosRequestConfig, type AxiosResponse } from 'axios'
-import { httpClientActions } from '@/api/httpClientActions'
+import axios, { type AxiosResponse } from 'axios'
 
 // Configura la URL base de la API
 const apiClient = axios.create({
@@ -28,13 +27,6 @@ export const DanyBotAPI = {
     const response: AxiosResponse = await apiClient.post('/gcode', data)
     return response.data
   },
-
-  // createGcode<T = unknown, R = AxiosResponse<T>, D = unknown> (data: D, options?: AxiosRequestConfig) {
-  //   return httpClientActions.post<T, R, D>('/gcode', data, {
-  //     ...options,
-  //     responseType: 'blob' // Indica que la respuesta será un archivo
-  //   })
-  // },
 
   // Obtener todos los racks
   getRacks: async () => {
