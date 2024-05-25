@@ -1,9 +1,9 @@
 {
-  "name": "fluidd",
-  "version": "1.30.0",
+  "name": "danybot",
+  "version": "1.0.2",
   "private": true,
   "type": "module",
-  "description": "fluidd, a klipper web client.",
+  "description": "danybot, a klipper web client.",
   "author": {
     "name": "Craig Bassett"
   },

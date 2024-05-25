@@ -47,7 +47,7 @@
         v-if="csvData.length"
         @click="generateGCode"
       >
-        Generate GCode
+        Generate GCode9
       </button>
     </div>
   </div>
@@ -188,6 +188,7 @@ export default class Routine extends Mixins(FilesMixin) {
       }
       try {
         const response = await DanyBotAPI.createGcode(jsonData)
+        this.jsonData = 'Entro al try'
         if (response.gcode) {
           console.log('G-code content:', response)
 
@@ -197,20 +198,6 @@ export default class Routine extends Mixins(FilesMixin) {
           this.selectedFile = new File([blob], 'routine.gcode', { type: 'text/plain' })
 
           console.log('File object:', this.selectedFile)
-
-          // const path = '' // Path relativo dentro del directorio `gcodes`
-          // const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
-
-          // try {
-          //   await this.uploadFile(this.selectedFile, path, root, false)
-          //   alert('File saved successfully!')
-          // } catch (error) {
-          //   console.error('Error uploading file:', error)
-          //   alert('Failed to save the file.')
-          // }
-
-          // await this.uploadFile(file, '', 'gcodes', false)
-          // alert('G-code generated and uploaded successfully!')
         } else {
           console.error('No data received from API')
           alert('Failed to generate and upload the G-code.')
@@ -219,6 +206,7 @@ export default class Routine extends Mixins(FilesMixin) {
         console.error('Error generating G-code:', error)
         alert('Failed to generate and upload the G-code.')
       }
+
       const path = '' // Path relativo dentro del directorio `gcodes`
       const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
 
