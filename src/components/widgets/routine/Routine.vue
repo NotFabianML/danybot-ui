@@ -3,17 +3,12 @@
     <div id="file-upload">
       <input
         type="file"
+        accept=".csv"
         @change="handleFileChange"
       >
       <button @click="saveFile">
         Save
       </button>
-      <button @click="viewJSON">
-        View JSON
-      </button>
-      <p v-if="jsonData">
-        JSON data: "{{ jsonData }}"
-      </p>
     </div>
     <div class="content">
       <file-system
@@ -24,31 +19,33 @@
         :filter-files="filterCsvFiles"
         @view-csv="handleViewCsv"
       />
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>PICK</th>
-              <th>PLACE</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(row, index) in csvData"
-              :key="index"
-            >
-              <td>{{ row.pick }}</td>
-              <td>{{ row.place }}</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="right-container">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>PICK</th>
+                <th>PLACE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(row, index) in csvData"
+                :key="index"
+              >
+                <td>{{ row.pick }}</td>
+                <td>{{ row.place }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <button
+          v-if="csvData.length"
+          @click="generateGCode"
+        >
+          Generate Gcode
+        </button>
       </div>
-      <button
-        v-if="csvData.length"
-        @click="generateGCode"
-      >
-        Generate GCode3
-      </button>
     </div>
   </div>
 </template>
@@ -118,86 +115,28 @@ export default class Routine extends Mixins(FilesMixin) {
     return file.name.endsWith('.csv')
   }
 
-  async viewJSON () {
-    try {
-      const data = await DanyBotAPI.getAll()
-      console.log(data)
-      this.jsonData = JSON.stringify(data, null, 2)
-    } catch (error) {
-      console.error('Error fetching JSON:', error)
-    }
-  }
-
   async generateGCode () {
     if (this.csvData.length) {
-      const jsonData = {
-        deck: [
-          { stand_location_X: 12.07, stand_location_Y: 125.81, stand_number: 1 },
-          { stand_location_X: 153, stand_location_Y: 125.81, stand_number: 2 },
-          { stand_location_X: 294.8, stand_location_Y: 125.7, stand_number: 3 },
-          { stand_location_X: 436.4, stand_location_Y: 125.81, stand_number: 4 },
-          { stand_location_X: 12.07, stand_location_Y: 272, stand_number: 5 },
-          { stand_location_X: 153.5, stand_location_Y: 272, stand_number: 6 },
-          { stand_location_X: 295.5, stand_location_Y: 272, stand_number: 7 },
-          { stand_location_X: 436.4, stand_location_Y: 272, stand_number: 8 },
-          { stand_location_X: 12.07, stand_location_Y: 418.8, stand_number: 9 },
-          { stand_location_X: 154.5, stand_location_Y: 418.8, stand_number: 10 },
-          { stand_location_X: 295.5, stand_location_Y: 418.8, stand_number: 11 },
-          { stand_location_X: 436.4, stand_location_Y: 418.8, stand_number: 12 }
-        ],
-        pick_and_place_list: this.csvData.map(row => [row.pick, row.place]),
-        pref_selected_vial: 2,
-        racks: [
-          {
-            close_piker: 0,
-            empty_secure_height: 140,
-            holding_secure_height: 115,
-            name: 'Vial 1ml 96',
-            open_piker: 0.4,
-            picking_height: 174,
-            placing_height: 160,
-            rack_dimensionX: 8,
-            rack_dimensionY: 12,
-            rack_id: 1,
-            vial_diameter: 9.34,
-            xy_empyt_speed: 10000,
-            xy_holding_speed: 10000,
-            z_empyt_speed: 2250,
-            z_holding_speed: 2250,
-            z_picking_speed: 300
-          },
-          {
-            close_piker: 0,
-            dimensionY: 6,
-            empty_secure_height: 160,
-            holding_secure_height: 100,
-            name: 'Vial 5ml 48',
-            open_piker: 0.4,
-            picking_height: 202,
-            placing_height: 202,
-            rack_dimensionX: 8,
-            rack_id: 2,
-            vial_diameter: 9,
-            xy_empyt_speed: 50000,
-            xy_holding_speed: 10000,
-            z_empyt_speed: 2250,
-            z_holding_speed: 2250,
-            z_picking_speed: 300
-          }
-        ]
-      }
       try {
-        const response = await DanyBotAPI.createGcode(jsonData)
-        this.jsonData = 'Entro al try'
-        if (response) {
-          console.log('G-code content:', response)
+        // Obtener datos iniciales desde la API
+        const apiData = await DanyBotAPI.getAll()
 
-          this.jsonData = JSON.stringify(response.gcode, null, 2)
+        // Reemplazar pick_and_place_list con los datos de csvData
+        apiData.pick_and_place_list = this.csvData.map(row => [row.pick, row.place])
+
+        // Generar el G-code usando los datos actualizados
+        const response = await DanyBotAPI.createGcode(apiData)
+        if (response) {
+          const date = new Date()
+          const timestamp = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, '0')}${String(date.getDate()).padStart(2, '0')}_${String(date.getHours()).padStart(2, '0')}${String(date.getMinutes()).padStart(2, '0')}${String(date.getSeconds()).padStart(2, '0')}`
+          const filename = `routine_${timestamp}.gcode`
 
           const blob = new Blob([response.gcode], { type: 'text/plain' })
-          this.selectedFile = new File([blob], 'routine.gcode', { type: 'text/plain' })
+          this.selectedFile = new File([blob], filename, { type: 'text/plain' })
 
-          console.log('File object:', this.selectedFile)
+          // Subir el archivo G-code generado
+          await this.uploadFile(this.selectedFile, '', 'gcodes', false)
+          alert('File saved successfully!')
         } else {
           console.error('No data received from API')
           alert('Failed to generate and upload the G-code.')
@@ -205,22 +144,6 @@ export default class Routine extends Mixins(FilesMixin) {
       } catch (error) {
         console.error('Error generating G-code:', error)
         alert('Failed to generate and upload the G-code.')
-      }
-
-      const path = '' // Path relativo dentro del directorio `gcodes`
-      const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
-
-      try {
-        if (this.selectedFile) {
-          await this.uploadFile(this.selectedFile, path, root, false)
-          alert('File saved successfully!')
-        } else {
-          console.error('No file selected')
-          alert('No file selected.')
-        }
-      } catch (error) {
-        console.error('Error uploading file:', error)
-        alert('Failed to save the file.')
       }
     } else {
       alert('No CSV data to generate G-code.')
@@ -267,10 +190,18 @@ p {
   margin-top: 90px;
   margin-bottom: 50px;
 }
-.table-container {
+.right-container {
   flex: 1;
-  max-width: 50%;
-  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;;
+  gap: 20px;
+}
+.table-container {
+  width: 100%;
+  max-height: 300px;
+  overflow-y: auto;
 }
 table {
   width: 100%;
