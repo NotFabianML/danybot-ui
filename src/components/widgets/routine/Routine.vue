@@ -47,7 +47,7 @@
         v-if="csvData.length"
         @click="generateGCode"
       >
-        Generate GCode9
+        Generate GCode3
       </button>
     </div>
   </div>
@@ -189,12 +189,12 @@ export default class Routine extends Mixins(FilesMixin) {
       try {
         const response = await DanyBotAPI.createGcode(jsonData)
         this.jsonData = 'Entro al try'
-        if (response.gcode) {
+        if (response) {
           console.log('G-code content:', response)
 
           this.jsonData = JSON.stringify(response.gcode, null, 2)
 
-          const blob = new Blob(response.gcode, { type: 'text/plain' })
+          const blob = new Blob([response.gcode], { type: 'text/plain' })
           this.selectedFile = new File([blob], 'routine.gcode', { type: 'text/plain' })
 
           console.log('File object:', this.selectedFile)
