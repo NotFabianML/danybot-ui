@@ -198,16 +198,16 @@ export default class Routine extends Mixins(FilesMixin) {
 
           console.log('File object:', this.selectedFile)
 
-          const path = '' // Path relativo dentro del directorio `gcodes`
-          const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
+          // const path = '' // Path relativo dentro del directorio `gcodes`
+          // const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
 
-          try {
-            await this.uploadFile(this.selectedFile, path, root, false)
-            alert('File saved successfully!')
-          } catch (error) {
-            console.error('Error uploading file:', error)
-            alert('Failed to save the file.')
-          }
+          // try {
+          //   await this.uploadFile(this.selectedFile, path, root, false)
+          //   alert('File saved successfully!')
+          // } catch (error) {
+          //   console.error('Error uploading file:', error)
+          //   alert('Failed to save the file.')
+          // }
 
           // await this.uploadFile(file, '', 'gcodes', false)
           // alert('G-code generated and uploaded successfully!')
@@ -218,6 +218,21 @@ export default class Routine extends Mixins(FilesMixin) {
       } catch (error) {
         console.error('Error generating G-code:', error)
         alert('Failed to generate and upload the G-code.')
+      }
+      const path = '' // Path relativo dentro del directorio `gcodes`
+      const root = 'gcodes' // Directorio raíz donde se almacenan los archivos G-code
+
+      try {
+        if (this.selectedFile) {
+          await this.uploadFile(this.selectedFile, path, root, false)
+          alert('File saved successfully!')
+        } else {
+          console.error('No file selected')
+          alert('No file selected.')
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error)
+        alert('Failed to save the file.')
       }
     } else {
       alert('No CSV data to generate G-code.')
