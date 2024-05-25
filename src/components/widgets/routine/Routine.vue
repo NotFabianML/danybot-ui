@@ -189,9 +189,11 @@ export default class Routine extends Mixins(FilesMixin) {
       try {
         const response = await DanyBotAPI.createGcode(jsonData)
         if (response.data) {
-          console.log('G-code content:', (response.data as { gcode: string }).gcode)
+          console.log('G-code content:', response.data.gcode)
 
-          const blob = new Blob([(response.data as { gcode: BlobPart }).gcode], { type: 'text/plain' })
+          this.jsonData = JSON.stringify(response, null, 2)
+
+          const blob = new Blob([response.data.gcode as BlobPart], { type: 'text/plain' })
           const file = new File([blob], 'routine.gcode', { type: 'text/plain' })
 
           console.log('File object:', file)
