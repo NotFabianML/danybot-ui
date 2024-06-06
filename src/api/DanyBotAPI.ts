@@ -1,14 +1,7 @@
 import axios, { type AxiosResponse } from 'axios'
 
-const ip = window.location.origin === 'http://localhost:8080' ? 'http://192.168.100.118:5000' : window.location.origin + ':5000'
-
-const getIP = () => {
-  const ip = window.location.origin
-
-  if (ip === 'http://localhost:8080') { return 'http://192.168.100.118:5000' }
-
-  return ip + ':5000'
-}
+const ip = window.location.origin === 'http://localhost:8080' ? 'http://127.0.0.1:5000' : window.location.origin + ':5000'
+// ip local: http://127.0.0.1:5000
 
 // Configura la URL base de la API
 const apiClient = axios.create({
