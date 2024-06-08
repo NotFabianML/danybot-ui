@@ -14,6 +14,7 @@
         @view-csv="handleViewCsv"
       />
       <RoutinePickAndPlaceTable
+        :csv-data="csvData"
         @generate-gcode="handleGenerateGCode"
       />
     </div>
@@ -37,12 +38,27 @@ import Papa from 'papaparse'
   }
 })
 export default class Routine extends Mixins(FilesMixin, RoutineMixin) {
+  csvData: Array<{ pick: string, place: string }> = []
+
+  async handleViewCsv (csvFile: File) {
+    try {
+      const data = await this.loadCsv(csvFile)
+      if (Array.isArray(data) && data.every(row => 'pick' in row && 'place' in row)) {
+        this.csvData = data as Array<{ pick: string, place: string }>
+      } else {
+        throw new Error('Invalid CSV format')
+      }
+    } catch (error) {
+      console.error('Error loading CSV:', error)
+      alert('Failed to load CSV.')
+    }
+  }
+
   async handleGenerateGCode (formData: Array<{ pick: string, place: string }>) {
     // Convert form data to CSV
     const csv = Papa.unparse(formData)
     const blob = new Blob([csv], { type: 'text/csv' })
-    const filename = `PickAndPlace_${this.getTimestamp()}.csv`
-    const file = new File([blob], filename, { type: 'text/csv' })
+    const file = new File([blob], 'routine.csv', { type: 'text/csv' })
 
     // Upload CSV file
     try {
