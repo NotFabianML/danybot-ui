@@ -41,11 +41,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Prop, Watch, Vue } from 'vue-property-decorator'
 
 @Component
 export default class RoutinePickAndPlaceTable extends Vue {
+  @Prop({ type: Array, default: () => [] }) csvData!: Array<{ pick: string, place: string }>
+
   formData: Array<{ pick: string, place: string }> = []
+
+  @Watch('csvData', { immediate: true, deep: true })
+  onCsvDataChange (newData: Array<{ pick: string, place: string }>) {
+    this.formData = newData.map(row => ({ ...row }))
+  }
 
   addRow () {
     this.formData.push({ pick: '', place: '' })
@@ -98,7 +105,7 @@ input[type="text"] {
   border: 1px solid #ddd;
   border-radius: 5px;
   width: 100%;
-  color: white;
+  color: #fff;
 }
 button {
   padding: 8px 15px;
